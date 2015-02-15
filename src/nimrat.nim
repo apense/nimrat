@@ -85,6 +85,8 @@ proc toRational*(i: int): Rational =
 
 proc toFloat*(f: Rational): float =
   ## Convert some rational to a float
+  if (f.denom == 0):
+    raise (DivByZeroError, "Denominator should be greater than 0")
   result = f.numer / f.denom
 
 proc simple*(f: Rational): Rational =
