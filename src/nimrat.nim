@@ -54,7 +54,7 @@ proc gcd(u1, v1: int): int =
 
   result = u shl shift
 
-proc lcm(u, v): int =
+proc lcm(u, v: int): int =
   ## quick and dirty LCM
   # only local
   result = abs(u*v) div gcd(u,v)
@@ -86,7 +86,7 @@ proc toRational*(i: int): Rational =
 proc toFloat*(f: Rational): float =
   ## Convert some rational to a float
   if (f.denom == 0):
-    raise (DivByZeroError, "Denominator should be greater than 0")
+    raise newException(DivByZeroError, "Denominator should be greater than 0")
   result = f.numer / f.denom
 
 proc simple*(f: Rational): Rational =
