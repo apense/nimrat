@@ -1,4 +1,4 @@
-import unittest, math, rationals
+import unittest, math, nimrat
 
 suite "rational numbers":
   test "Conversions":

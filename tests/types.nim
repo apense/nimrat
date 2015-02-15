@@ -1,4 +1,4 @@
-import unittest, rationals
+import unittest, nimrat
 
 suite "rational numbers":
   test "rational type checks":
