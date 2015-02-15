@@ -1,5 +1,7 @@
 # nimrat [![Build Status](https://circleci.com/gh/apense/nimrat.png)](https://circleci.com/gh/apense/nimrat)
 
+# <:3)~~
+
 This module implements some very basic rational arithmetic in Nim.
 
 Example:
