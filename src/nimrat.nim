@@ -27,6 +27,7 @@ type
 
 proc gcd(u1, v1: int): int =
   ## just a local binary GCD
+  # not exported because we're only using it here
   if (u1 == 0): return v1
   if (v1 == 0): return u1
 
@@ -55,6 +56,7 @@ proc gcd(u1, v1: int): int =
 
 proc lcm(u, v): int =
   ## quick and dirty LCM
+  # only local
   result = abs(u*v) div gcd(u,v)
 
 proc toRational*(r: float, bound: int = 10000): Rational =
@@ -85,30 +87,49 @@ proc toFloat*(f: Rational): float =
   ## Convert some rational to a float
   result = f.numer / f.denom
 
-proc simplify*(f: Rational): Rational =
+proc simple*(f: Rational): Rational =
   ## Simplify a fraction by dividing the numerator and denominator
   ## by the greatest common divisor.
-  var gd = gcd(f.numer, f.denom)
+  let gd = gcd(f.numer, f.denom)
+  if (f.denom == 0):
+    raise newException(DivByZeroError, "Can't divide by zero")
   result.numer = f.numer div gd
   result.denom = f.denom div gd
+  if (result == (0,0)):
+    result = (1,1)
+
+proc simplify*(f: var Rational) =
+  ## Simplify a rational using simple()
+  f = simple(f)
 
 proc `*`*(f, g: Rational): Rational =
   ## Multiply two fractions and simplify the result
   result.numer = f.numer * g.numer
   result.denom = f.denom * g.denom
-  result = simplify(result)
+  result.simplify
+
+proc `*=`*(f: var Rational, g: Rational) =
+  f = f * g
 
 proc `inverse`*(f: Rational): Rational =
+  ## Get the reciprocal of some rational
   result = (f.denom, f.numer)
+
+proc `invert`*(f: var Rational) =
+  ## Invert some rational
+  f = f.inverse
 
 proc `/`*(f, g: Rational): Rational =
   ## Divide by some fraction
   result = f * inverse(g)
 
+proc `/=`*(f: var Rational, g: Rational) =
+  f = f / g
+
 proc `-`*(f: Rational): Rational =
   ## Unary minus. Negate a fraction.
   result.numer = -(f.numer)
-  result.denom = -(f.denom)
+  result.denom = (f.denom)
 
 proc `+`*(f, g: Rational): Rational =
   ## Add two fractions
@@ -124,7 +145,42 @@ proc `+`*(f, g: Rational): Rational =
     g1: Rational = (g.numer * secondMultiplicand, g.denom * secondMultiplicand)
   result.numer = f1.numer + g1.numer
   result.denom = f1.denom # denominator doesn't add!
-  result = simplify(result)
+  result.simplify
+
+proc `+=`*(f: var Rational, g: Rational) =
+  f = f + g
+
+proc `+`*(f: Rational, g: int): Rational =
+  ## Add some rational and integer, returning a rational
+  let gFrac = g.toRational
+  result = f + gFrac
+
+proc `+`*(f: int, g: Rational): Rational =
+  ## Addition is commutative :)
+  result = g + f
+
+proc `+=`*(f: var Rational, g: int) =
+  f = f + g
+
+proc `-`*(f, g: Rational): Rational =
+  ## Subtract some rational from another
+  result = f + (-g)
+
+proc `-=`*(f: var Rational, g: Rational) =
+  f = f - g
+
+proc `-`*(f: Rational, g: int): Rational =
+  ## Subtract some integer from a rational, returning a rational
+  let gFrac = g.toRational
+  result = f - gFrac
+
+proc `-=`*(f: var Rational, g: int) =
+  let gFrac = g.toRational
+  f = f - gFrac
+
+proc `-`*(f: int, g: Rational): Rational =
+  ## Subtract some rational from an integer, returning a rational
+  result = f.toRational - g
 
 proc `$`*(f: Rational): string =
   ## Represent a fraction as "n / d"
