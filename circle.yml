@@ -14,6 +14,6 @@ dependencies:
   cache_directories:
     - "~/bin/"
     - "~/nim/"
-  test:
-    override:
-      - nim c -r tests/all
+test:
+  override:
+    - nim c -r tests/all
