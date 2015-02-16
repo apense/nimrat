@@ -20,7 +20,7 @@
 ##    echo simplify((33,44)) # simplify a given fraction
 ##    # Prints "3 / 4"
 
-import math, unittest
+import math
 
 type
   Rational* = tuple[numer, denom: int] ## Rational as integer numerator and denominator
@@ -97,8 +97,6 @@ proc simple*(f: Rational): Rational =
     raise newException(DivByZeroError, "Can't divide by zero")
   result.numer = f.numer div gd
   result.denom = f.denom div gd
-  if (result == (0,0)):
-    result = (1,1)
 
 proc simplify*(f: var Rational) =
   ## Simplify a rational using simple()
@@ -139,14 +137,9 @@ proc `+`*(f, g: Rational): Rational =
   # If you do it by hand, you make sure the denominators are
   # equivalent by finding the least common multiple, 
   # then you add the resultant numerators
-  let commonDenom = lcm(f.denom, g.denom)
-  var
-    firstMultiplicand = commonDenom div f.denom
-    secondMultiplicand = commonDenom div g.denom
-    f1: Rational = (f.numer * firstMultiplicand, f.denom * firstMultiplicand)
-    g1: Rational = (g.numer * secondMultiplicand, g.denom * secondMultiplicand)
-  result.numer = f1.numer + g1.numer
-  result.denom = f1.denom # denominator doesn't add!
+  # Or, a/b + c/d == (ad + bc) / bd
+  result.numer = f.numer * g.denom + f.denom * g.numer
+  result.denom = f.denom * g.denom
   result.simplify
 
 proc `+=`*(f: var Rational, g: Rational) =
