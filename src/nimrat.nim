@@ -89,8 +89,8 @@ proc toFloat*(f: Rational): float =
     raise newException(DivByZeroError, "Denominator should be greater than 0")
   result = f.numer / f.denom
 
-proc simple*(f: Rational): Rational =
-  ## Simplify a fraction by dividing the numerator and denominator
+proc reduced*(f: Rational): Rational =
+  ## Output a simplified fraction by dividing the numerator and denominator
   ## by the greatest common divisor.
   let gd = gcd(f.numer, f.denom)
   if (f.denom == 0):
@@ -98,24 +98,24 @@ proc simple*(f: Rational): Rational =
   result.numer = f.numer div gd
   result.denom = f.denom div gd
 
-proc simplify*(f: var Rational) =
+proc reduce*(f: var Rational) =
   ## Simplify a rational using simple()
-  f = simple(f)
+  f = reduced(f)
 
 proc `*`*(f, g: Rational): Rational =
   ## Multiply two fractions and simplify the result
   result.numer = f.numer * g.numer
   result.denom = f.denom * g.denom
-  result.simplify
+  result.reduce
 
 proc `*=`*(f: var Rational, g: Rational) =
   f = f * g
 
-proc `inverse`*(f: Rational): Rational =
+proc inverse*(f: Rational): Rational =
   ## Get the reciprocal of some rational
   result = (f.denom, f.numer)
 
-proc `invert`*(f: var Rational) =
+proc invert*(f: var Rational) =
   ## Invert some rational
   f = f.inverse
 
@@ -140,7 +140,7 @@ proc `+`*(f, g: Rational): Rational =
   # Or, a/b + c/d == (ad + bc) / bd
   result.numer = f.numer * g.denom + f.denom * g.numer
   result.denom = f.denom * g.denom
-  result.simplify
+  result.reduce
 
 proc `+=`*(f: var Rational, g: Rational) =
   f = f + g

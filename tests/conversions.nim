@@ -8,15 +8,15 @@ suite "rational numbers":
     check ($toRational(Pi) == "355 / 113")
     check (toRational(8) == (8,1))
     check (toFloat((3,4)) == 0.75)
-  test "simplify":
+  test "reduce":
     let toSimplify = (42,22)
     let toSimplify2 = (55,33)
     let toSimplify3 = (7,6)
     let toSimplify4 = (-4,2)
-    check simple(toSimplify) == (21,11)
-    check simple(toSimplify2) == (5,3)
-    check simple(toSimplify3) == (7,6)
-    check simple(toSimplify4) == (-2,1)
+    check reduced(toSimplify) == (21,11)
+    check reduced(toSimplify2) == (5,3)
+    check reduced(toSimplify3) == (7,6)
+    check reduced(toSimplify4) == (-2,1)
     var toSimplify5 = (6,8)
-    toSimplify5.simplify
+    toSimplify5.reduce
     check toSimplify5 == (3,4)
