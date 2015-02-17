@@ -181,10 +181,10 @@ proc `$`*(f: Rational): string =
   ## Represent a fraction as "n / d"
   result = $f.numer & " / " & $f.denom
 
-proc `isDyadic`*(f: Rational): bool =
+proc isDyadic*(f: Rational): bool =
   ## Simple check to see if we have a dyadic fraction
   result = (f.denom).isPowerOfTwo
 
-proc `isUnit`*(f: Rational): bool =
+proc isUnit*(f: Rational): bool =
   ## Simple check to see if we have a unit fraction
   result = (f.numer == 1)
