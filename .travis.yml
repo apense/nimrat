@@ -5,17 +5,11 @@ os:
 language: nim
 install:
   - |
-    if [ ! -x ~/nim/bin/nim ]; then
-      git clone -b devel --depth 1 git://github.com/araq/nim ~/nim/
-      git clone -b devel --depth 1 git://github.com/nim-lang/csources ~/nim/csources/
-      cd ~/nim/csources; sh build.sh; cd ..; rm -rf csources
-      bin/nim c koch; ./koch boot -d:release
-      ln -fs ~/nim/bin/nim ~/bin/nim
-    else
-      cd ~/nim; git fetch origin
-      git merge FETCH_HEAD | grep "Already up-to-date" || (bin/nim c koch; ./koch boot -d:release)
-    fi
+    git clone -b devel git://github.com/araq/nim.git
+    cd nim; git clone -b devel --depth 1 git://github.com/nim-lang/csources
+    cd csources && sh build.sh; cd ..;
+    bin/nim c koch; ./koch boot -d:release; cd ..
 before_script:
-  - export PATH=~/nim/bin:$PATH
+  - export PATH=./nim/bin:$PATH
 script:
   - nim c -r tests/all
