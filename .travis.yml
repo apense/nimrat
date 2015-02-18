@@ -16,6 +16,6 @@ install:
       git merge FETCH_HEAD | grep "Already up-to-date" || (bin/nim c koch; ./koch boot -d:release)
     fi
 before_script:
-  - export PATH=~/bin:~/nim:$PATH
+  - export PATH=~/nim/bin:$PATH
 script:
   - nim c -r tests/all
