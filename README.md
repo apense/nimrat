@@ -1,4 +1,4 @@
-# nimrat [![Build Status](https://circleci.com/gh/apense/nimrat.png)](https://circleci.com/gh/apense/nimrat)
+# nimrat [![Build Status](https://circleci.com/gh/apense/nimrat.png)](https://circleci.com/gh/apense/nimrat) [![Build Status](https://travis-ci.org/apense/nimrat.svg)](https://travis-ci.org/apense/nimrat)
 
 # <:3)~~
 

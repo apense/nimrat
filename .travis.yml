@@ -1,8 +1,4 @@
-os:
-  - linux
-  - osx
-  - windows
-language: nim
+language: c
 install:
   - |
     git clone -b devel git://github.com/araq/nim.git
